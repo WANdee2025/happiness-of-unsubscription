@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Happiness of Unsubscription</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #000; color: #fff; /* ดำสนิท ตัวหนังสือขาว */
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        #display-container {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .line {
+            font-size: clamp(1.5rem, 6vw, 3.5rem); /* ตัวใหญ่ ชัดเจน กลางจอ */
+            font-weight: 800;
+            margin: 20px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        #status-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #333; /* จางๆ เพื่อไม่ให้กวนสายตา */
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display-container">
+        <div class="line" id="line1"></div>
+        <div class="line" id="line2"></div>
+        <div class="line" id="line3"></div>
+    </div>
+
+    <div id="status-indicator">UNSUBSCRIPTION IN PROGRESS</div>
+
+    <script>
+        const container = document.getElementById('display-container');
+        const lines = [
+            document.getElementById('line1'),
+            document.getElementById('line2'),
+            document.getElementById('line3')
+        ];
+
+        const pause = (ms) => new Promise(res => setTimeout(res, ms));
+
+        async function updateSlide(textArray) {
+            container.style.opacity = "0";
+            await pause(1500); // ช่วงมืดสนิทระหว่างเปลี่ยน Slide
+            
+            lines.forEach((el, i) => {
+                el.innerText = textArray[i] || ""; // ใส่ข้อความตามอาเรย์
+            });
+            
+            container.style.opacity = "1";
+            await pause(6000); // แช่หน้าจอไว้ให้ซึมซับ
+        }
+
+        async function mainLoop() {
+            while (true) {
+                // Slide 1: Viveka
+                await updateSlide(["SILENCING", "EXTERNAL NOISE", ""]);
+
+                // Slide 2: Abyapajjha
+                await updateSlide(["RELEASING", "ALL ILL-WILL", ""]);
+
+                // Slide 3: Viragatta
+                await updateSlide(["UNSUBSCRIBING", "FROM DESIRE", ""]);
+
+                // Slide 4: Final State (3 Lines)
+                await updateSlide([
+                    "The Happiness of Unsubscription",
+                    "The Dissolution of Self",
+                    "The Absolute Freedom"
+                ]);
+
+                // จบ Slide 4 แล้วค้างไว้นานหน่อยก่อนวนใหม่
+                await pause(4000);
+            }
+        }
+
+        window.onload = mainLoop;
+    </script>
+</body>
+</html>
